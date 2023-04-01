@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\S59729\\source\\repos\\BikeRentalSystem\\BikeRentalSystem\\BikeRentalSystem.csproj": {}
+    "C:\\Users\\S59729\\Documents\\GitHub\\Bike_Rental_ASP_.NET\\BikeRentalSystem\\BikeRentalSystem\\BikeRentalSystem.csproj": {}
   },
   "projects": {
-    "C:\\Users\\S59729\\source\\repos\\BikeRentalSystem\\BikeRentalSystem\\BikeRentalSystem.csproj": {
+    "C:\\Users\\S59729\\Documents\\GitHub\\Bike_Rental_ASP_.NET\\BikeRentalSystem\\BikeRentalSystem\\BikeRentalSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\S59729\\source\\repos\\BikeRentalSystem\\BikeRentalSystem\\BikeRentalSystem.csproj",
+        "projectUniqueName": "C:\\Users\\S59729\\Documents\\GitHub\\Bike_Rental_ASP_.NET\\BikeRentalSystem\\BikeRentalSystem\\BikeRentalSystem.csproj",
         "projectName": "BikeRentalSystem",
-        "projectPath": "C:\\Users\\S59729\\source\\repos\\BikeRentalSystem\\BikeRentalSystem\\BikeRentalSystem.csproj",
+        "projectPath": "C:\\Users\\S59729\\Documents\\GitHub\\Bike_Rental_ASP_.NET\\BikeRentalSystem\\BikeRentalSystem\\BikeRentalSystem.csproj",
         "packagesPath": "C:\\Users\\S59729\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\S59729\\source\\repos\\BikeRentalSystem\\BikeRentalSystem\\obj\\",
+        "outputPath": "C:\\Users\\S59729\\Documents\\GitHub\\Bike_Rental_ASP_.NET\\BikeRentalSystem\\BikeRentalSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\S59729\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[6.0.13, )"
