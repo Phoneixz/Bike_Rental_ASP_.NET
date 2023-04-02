@@ -245,3 +245,14 @@ C:\Users\S59729\source\repos\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\
 C:\Users\S59729\source\repos\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.pdb
 C:\Users\S59729\source\repos\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.genruntimeconfig.cache
 C:\Users\S59729\source\repos\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\ref\BikeRentalSystem.dll
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.csproj.AssemblyReference.cache
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.AssemblyInfoInputs.cache
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.AssemblyInfo.cs
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.csproj.CoreCompileInputs.cache
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.RazorAssemblyInfo.cache
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.RazorAssemblyInfo.cs
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.dll
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\refint\BikeRentalSystem.dll
+C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem\obj\Debug\net6.0\BikeRentalSystem.pdb
