@@ -12,6 +12,9 @@
 
         public string ImgURL { get; set; }
         
+        public int VehicleTypeID { get; set; }
         public VehicleType VehicleType { get; set; }
+
+        public bool Availability { get; set; }
     }
 }

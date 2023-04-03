@@ -1,12 +1,16 @@
-﻿namespace BikeRentalSystem.Infrastructure.Database
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace BikeRentalSystem.Infrastructure.Database
 {
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly AppDbContext _context;
+        
 
         public Repository(AppDbContext context)
         {
-            context = _context;
+            _context = context;
         }
         public void Add(T entity)
         {
@@ -23,9 +27,9 @@
 
         public IEnumerable<T> GetAll()
         {
-            return _context.Set<T>().ToList();  
+            return _context.Set<T>().ToList();
         }
-
+        
         public T GetByID(int id)
         {
             return _context.Set<T>().Find(id);

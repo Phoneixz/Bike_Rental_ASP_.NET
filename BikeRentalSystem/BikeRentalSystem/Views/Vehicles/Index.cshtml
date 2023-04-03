@@ -15,11 +15,12 @@
         {
             <div class="col">
                 <div class="card h-100">
-                    <img src="@Url.Content(vehicle.ImgURL)" class="card-img-top" alt="@vehicle.Name">
+                    <img src="@Url.Content(vehicle.ImgURL)" class="card-img-top" alt="@vehicle.Make">
                     <div class="card-body">
-                        <h5 class="card-title">@vehicle.Name </h5>
-                        <p class="card-text">Id: @vehicle.Id</p>
+                        <p class="card-text">Make: @vehicle.Make</p>
+                        <p class="card-text">Type: @vehicle.VehicleType?.Type</p>
                         <p class="card-text">Description: @vehicle.Description</p>
+                        <p cite="card-text">Availability: @(vehicle.Availability ? "Available" : "Unavailable")</p>
                         <p class="card-text">Price: @vehicle.Price</p>
                             <a href="@Url.Action("GetVehicleDetails", "Vehicles", new { id = vehicle.Id })" class="btn btn-primary">View Details</a>
                     </div>

@@ -1,4 +1,7 @@
-﻿namespace BikeRentalSystem.Infrastructure.Database
+﻿using Microsoft.CodeAnalysis;
+using System.Linq.Expressions;
+
+namespace BikeRentalSystem.Infrastructure.Database
 {
     public interface IRepository<T>
     {

@@ -1,11 +1,15 @@
 ﻿using BikeRentalSystem.Models;
+using Microsoft.EntityFrameworkCore;
+using NuGet.ProjectModel;
+using NuGet.Protocol;
+using System.Linq.Expressions;
 
 namespace BikeRentalSystem.Infrastructure.Database
 {
     public class VehicleRepository : IRepository<Vehicle>
     {
         private readonly Repository<Vehicle> _repository;
-
+        
         public VehicleRepository(Repository<Vehicle> repository) 
         {
             _repository = repository;
@@ -14,7 +18,6 @@ namespace BikeRentalSystem.Infrastructure.Database
         {
             _repository.Add(entity);
         }
-
         public void Delete(int id)
         {
             _repository.Delete(id);
@@ -35,8 +38,4 @@ namespace BikeRentalSystem.Infrastructure.Database
             _repository.Update(entity);
         }
     }
-
-
-
-
 }

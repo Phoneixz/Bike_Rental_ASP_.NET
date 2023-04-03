@@ -1,42 +1,41 @@
 ﻿@model BikeRentalSystem.Models.Vehicle
 
 @{
-    ViewData["Title"] = "Vehicle Details";
+    ViewData["Title"] = "Vehicle details";
 }
 
 <h1>Vehicle details</h1>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-    </dl>
-    <img src="@Url.Content(Model.ImgURL)" alt="@Model.Name" />
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2>@Model.Make</h2>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Make</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Availability</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.Make</td>
+                            <td>@Model.Description</td>
+                            <td>@Model.Price</td>
+                            <td><p>@(Model.Availability ? "Available" : "Unavailable")</p></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                            <img src="@Url.Content(Model.ImgURL)" alt="@Model.Make"/>
+</div>
+</div>
+</div>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a> |
+    <a class="btn btn-primary" asp-action="EditVehicle" asp-route-id="@Model?.Id">Edit</a> |
+    <a class="btn btn-primary" asp-action="DeleteVehicle" asp-route-id="@Model?.Id">Delete</a>
 </div>

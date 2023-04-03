@@ -1,6 +1,8 @@
 using BikeRentalSystem.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using BikeRentalSystem.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +10,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(x => x.UseInMemoryDatabase("Test"));
-builder.Services.AddScoped(typeof(IRepository<Vehicle>), typeof(VehicleRepository));
+builder.Services.AddScoped<Repository<Vehicle>>(sp =>
+{
+    var dbContext = sp.GetRequiredService<AppDbContext>();
+    return new Repository<Vehicle>(dbContext);
+});
+builder.Services.AddScoped<IRepository<Vehicle>, VehicleRepository>();
+
+
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var serviceprovider = scope.ServiceProvider;
+    var dbContext = serviceprovider.GetRequiredService<AppDbContext>();
+    DataInitialization.Initialize(dbContext);
+}
+   
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

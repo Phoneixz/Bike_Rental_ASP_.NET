@@ -10,18 +10,18 @@ namespace BikeRentalSystem.Controllers
         private readonly IRepository<Vehicle> _vehicleRepository;
         public VehiclesController(IRepository<Vehicle> vehicleRepository)
         {
-            vehicleRepository = _vehicleRepository;
+            _vehicleRepository = vehicleRepository;
         }
+
         [HttpGet]
         public IActionResult Index()
         {
             var vehicles = _vehicleRepository.GetAll();
             return View(vehicles);
         }
-        [HttpGet]
         public IActionResult GetVehicleDetails(int id)
         {
-            var vehicle = vehicles.SingleOrDefault(x => x.Id == id);
+            var vehicle = _vehicleRepository.GetByID(id);
             return View(vehicle);
         }
         public IActionResult Create()
@@ -47,11 +47,17 @@ namespace BikeRentalSystem.Controllers
             _vehicleRepository.Update(vehicle);
             return RedirectToAction("Index");
         }
-        [HttpDelete]
+        [HttpGet]
         public IActionResult DeleteVehicle(int id)
         {
+            var vehicle = _vehicleRepository.GetByID(id);
+            return View(vehicle);
+        }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
             _vehicleRepository.Delete(id);
-            return View();
+            return RedirectToAction("Index");
         }
         
     }
