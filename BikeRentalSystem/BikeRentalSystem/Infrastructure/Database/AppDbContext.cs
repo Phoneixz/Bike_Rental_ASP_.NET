@@ -12,8 +12,8 @@ namespace BikeRentalSystem.Infrastructure.Database
 
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
-        public DbSet<Reservation> Reservations { get; private set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
-        public DbSet<RentalPoint> RentalPoints { get; private set; }
+        public DbSet<RentalPoint> RentalPoints { get; set; }
     }
 }

@@ -23,7 +23,14 @@ namespace BikeRentalSystem.Models
                 };
                 _context.Vehicles.AddRange(vehicles);
                 _context.SaveChanges();
-            
+
+            var rentalPoints = new List<RentalPoint>
+            {
+                new RentalPoint { Id= 1, Name="Rental point 1", Address="Stojałowskiego 15"},
+                new RentalPoint { Id=2, Name="Rental point 2", Address="Piastowska 32"}
+            };
+            _context.RentalPoints.AddRange(rentalPoints);
+            _context.SaveChanges();
         }
     }
 }

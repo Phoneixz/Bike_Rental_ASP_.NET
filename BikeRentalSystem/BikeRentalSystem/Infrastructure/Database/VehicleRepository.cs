@@ -23,14 +23,14 @@ namespace BikeRentalSystem.Infrastructure.Database
             _repository.Delete(id);
         }
 
-        public IEnumerable<Vehicle> GetAll()
+        public IQueryable<Vehicle> GetAll()
         {
             return _repository.GetAll();
         }
 
-        public Vehicle GetByID(int id)
+        public Vehicle GetByID(int id, params Expression<Func<Vehicle, object>>[] expressions)
         {
-            return _repository.GetByID(id);
+            return _repository.GetByID(id, e => e.VehicleType);
         }
 
         public void Update(Vehicle entity)

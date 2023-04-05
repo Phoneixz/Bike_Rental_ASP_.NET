@@ -5,8 +5,8 @@ namespace BikeRentalSystem.Infrastructure.Database
 {
     public interface IRepository<T>
     {
-        IEnumerable<T> GetAll();
-        T GetByID(int id);
+        IQueryable<T> GetAll();
+        T GetByID(int id, params Expression<Func<T, object>>[] includes);
         void Add (T entity);
         void Update (T entity);
         void Delete (int id);

@@ -16,7 +16,12 @@ builder.Services.AddScoped<Repository<Vehicle>>(sp =>
     return new Repository<Vehicle>(dbContext);
 });
 builder.Services.AddScoped<IRepository<Vehicle>, VehicleRepository>();
-
+builder.Services.AddScoped<Repository<RentalPoint>>(sp =>
+{
+    var dbContext = sp.GetRequiredService<AppDbContext>();
+    return new Repository<RentalPoint>(dbContext);
+});
+builder.Services.AddScoped<IRepository<RentalPoint>, RentalPointRepository>();
 
 
 var app = builder.Build();

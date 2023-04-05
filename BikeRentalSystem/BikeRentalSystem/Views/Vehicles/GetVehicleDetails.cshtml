@@ -1,4 +1,4 @@
-﻿@model BikeRentalSystem.Models.Vehicle
+﻿@model BikeRentalSystem.ViewModels.VehicleDetailViewModel
 
 @{
     ViewData["Title"] = "Vehicle details";
@@ -17,6 +17,7 @@
                             <th>Make</th>
                             <th>Description</th>
                             <th>Price</th>
+                            <th>Type</th>
                             <th>Availability</th>
                         </tr>
                     </thead>
@@ -25,6 +26,7 @@
                             <td>@Model.Make</td>
                             <td>@Model.Description</td>
                             <td>@Model.Price</td>
+                            <td>@Model.VehicleType.Type</td>
                             <td><p>@(Model.Availability ? "Available" : "Unavailable")</p></td>
                         </tr>
                         </tbody>

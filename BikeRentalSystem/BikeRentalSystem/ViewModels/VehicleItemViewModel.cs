@@ -3,5 +3,5 @@ using BikeRentalSystem.Models;
 
 public class VehicleItemViewModel
 {
-    public List<Vehicle> Vehicles { get; set; }
+    public List<VehicleDetailViewModel> Vehicles { get; set; }
 }

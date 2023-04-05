@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BikeRentalSystem.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace BikeRentalSystem.Infrastructure.Database
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class, IEntity
     {
         private readonly AppDbContext _context;
         
@@ -25,14 +26,19 @@ namespace BikeRentalSystem.Infrastructure.Database
             _context.SaveChanges();
         }
 
-        public IEnumerable<T> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return _context.Set<T>().ToList();
+            return _context.Set<T>();
         }
         
-        public T GetByID(int id)
+        public T GetByID(int id, params Expression<Func<T, object>>[] includes)
         {
-            return _context.Set<T>().Find(id);
+            IQueryable<T> query = _context.Set<T>();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return query.FirstOrDefault(e => e.Id == id);
         }
 
         public void Update(T entity)
