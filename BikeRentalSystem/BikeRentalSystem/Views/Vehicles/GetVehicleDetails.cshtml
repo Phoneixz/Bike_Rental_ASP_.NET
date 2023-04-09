@@ -4,40 +4,53 @@
     ViewData["Title"] = "Vehicle details";
 }
 
-<h1>Vehicle details</h1>
-
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h2>@Model.Make</h2>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Make</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Type</th>
-                            <th>Availability</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>@Model.Make</td>
-                            <td>@Model.Description</td>
-                            <td>@Model.Price</td>
-                            <td>@Model.VehicleType.Type</td>
-                            <td><p>@(Model.Availability ? "Available" : "Unavailable")</p></td>
-                        </tr>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-5">@Model.Make</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <img src="@Url.Content(Model.ImgURL)" class="card-img-top" alt="@Model.Make">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Vehicle details</h5>
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>Make</th>
+                                <td>@Model.Make</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>@Model.Description</td>
+                            </tr>
+                            <tr>
+                                <th>Price</th>
+                                <td>@Model.Price</td>
+                            </tr>
+                            <tr>
+                                <th>Type</th>
+                                <td>@Model.VehicleType.Type</td>
+                            </tr>
+                            <tr>
+                                <th>Availability</th>
+                                <td>@(Model.Availability ? "Available" : "Unavailable")</td>
+                            </tr>
                         </tbody>
-                        </table>
-                            <img src="@Url.Content(Model.ImgURL)" alt="@Model.Make"/>
-</div>
-</div>
-</div>
-</div>
-<div>
-    <a class="btn btn-primary" asp-action="Index">Back to List</a> |
-    <a class="btn btn-primary" asp-action="EditVehicle" asp-route-id="@Model?.Id">Edit</a> |
-    <a class="btn btn-primary" asp-action="DeleteVehicle" asp-route-id="@Model?.Id">Delete</a>
+                    </table>
+                </div>
+            </div>
+            <div class="d-grid gap-2">
+                <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                <a class="btn btn-primary" asp-action="EditVehicle" asp-route-id="@Model?.Id">Edit</a>
+                <a class="btn btn-danger" asp-action="DeleteVehicle" asp-route-id="@Model?.Id">Delete</a>
+            </div>
+        </div>
+    </div>
 </div>

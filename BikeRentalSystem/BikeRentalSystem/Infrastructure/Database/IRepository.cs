@@ -1,9 +1,10 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using BikeRentalSystem.Models;
+using Microsoft.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace BikeRentalSystem.Infrastructure.Database
 {
-    public interface IRepository<T>
+    public interface IRepository<T> 
     {
         IQueryable<T> GetAll();
         T GetByID(int id, params Expression<Func<T, object>>[] includes);

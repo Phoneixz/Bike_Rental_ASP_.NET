@@ -1,38 +1,49 @@
-﻿@model BikeRentalSystem.Models.RentalPoint
+﻿@model BikeRentalSystem.ViewModels.RentalPointDetailViewModel
 
 @{
-    ViewData["Title"] = "Rental point details";
+    ViewData["Title"] = "Rental Point Details";
 }
 
-<h1>Rental point details</h1>
-
 <div class="container">
+    <h1 class="my-4">@Model.Name</h1>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Address:</h5>
+            <p class="card-text">@Model.Address</p>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
-            <h2>@Model.Name</h2>
-            <div class="table-responsive">
-                <table class="table">
+            <h5 class="card-title">Vehicles:</h5>
+            @if (Model.Vehicles.Count > 0)
+            {
+                <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Vehicles</th>
+                            <th>Make</th>
+                            <th>Type</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>@Model.Name</td>
-                            <td>@Model.Address</td>
-                            <td>@Model.vehicles</td>
-                        </tr>
+                        @foreach (var vehicle in Model.Vehicles)
+                        {
+                            <tr>
+                                <td>@vehicle.Make</td>
+                                <td>@vehicle.VehicleType.Type</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
-            </div>
+            }
+            else
+            {
+                <p class="card-text">No vehicles are currently available at this rental point.</p>
+            }
         </div>
     </div>
-</div>
-<div>
-    <a class="btn btn-primary" asp-action="Index">Back to List</a> |
-    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a class="btn btn-primary" asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
+    <div class="my-4">
+        <a class="btn btn-primary" asp-action="Index">Back to List</a>
+        <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+    </div>
 </div>

@@ -1,6 +1,6 @@
 ﻿namespace BikeRentalSystem.Models
 {
-    public class VehicleType : IEntity 
+    public class VehicleType : IEntity
     {
         public int Id { get; set; }
 

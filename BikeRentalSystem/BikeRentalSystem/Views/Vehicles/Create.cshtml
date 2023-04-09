@@ -1,56 +1,58 @@
 ﻿@model BikeRentalSystem.ViewModels.VehicleDetailViewModel;
-       
+
 @{
     ViewData["Title"] = "Add vehicle";
 }
 
-<h1>Add new vehicle</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Make" class="control-label"></label>
-                <input asp-for="Make" class="form-control" />
-                <span asp-validation-for="Make" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImgURL" class="control-label"></label>
-                <input asp-for="ImgURL" class="form-control" />
-                <span asp-validation-for="ImgURL" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VehicleType" class="control-label"></label>
-                <select asp-for="VehicleType" asp-items="@(Model.VehicleTypes.Select(v => new SelectListItem { Text = v.Type, Value = v.Type}))" class="form-control"></select>
-                <span asp-validation-for="VehicleType" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Availability" /> @Html.DisplayNameFor(model => model.Availability)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" asp-action="CreateVehicle" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-5">Add new vehicle</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Make" class="form-label">Make</label>
+                    <input asp-for="Make" class="form-control" />
+                    <span asp-validation-for="Make" class="form-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="form-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="form-label">Price</label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="form-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImgURL" class="form-label">Image URL</label>
+                    <input asp-for="ImgURL" class="form-control" />
+                    <span asp-validation-for="ImgURL" class="form-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VehicleTypeId" class="form-label">Vehicle type</label>
+                    <select asp-for="VehicleTypeId" asp-items="Model.VehicleTypes" class="form-select"></select>
+                    <span asp-validation-for="VehicleTypeId" class="form-error"></span>
+                </div>
+                <div class="form-group form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="Availability" />
+                    <label class="form-check-label" asp-for="Availability">Available</label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" asp-action="CreateVehicle" class="btn btn-primary">Create</button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

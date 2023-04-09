@@ -1,5 +1,5 @@
 ﻿namespace BikeRentalSystem.ViewModels;
-using BikeRentalSystem.Models;
+
 
 public class VehicleItemViewModel
 {

@@ -3,6 +3,7 @@ using BikeRentalSystem.Models;
 using BikeRentalSystem.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using BikeRentalSystem.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BikeRentalSystem.Controllers
 {
@@ -56,7 +57,13 @@ namespace BikeRentalSystem.Controllers
         }
         public IActionResult Create()
         {
-            var vehicleTypes = _context.VehicleTypes.ToList();
+            var vehicleTypes = _context.VehicleTypes.
+                Select( vt => new SelectListItem
+                {
+                    Value = vt.Id.ToString(),
+                    Text = vt.Type
+                })
+                .ToList();
             var vm = new VehicleDetailViewModel { VehicleTypes = vehicleTypes };
             return View(vm);
         }
@@ -69,7 +76,7 @@ namespace BikeRentalSystem.Controllers
                 Description = vm.Description,
                 Price = vm.Price,
                 ImgURL = vm.ImgURL,
-                VehicleType = vm.VehicleType,
+                VehicleTypeID = vm.VehicleTypeId,
                 Availability = vm.Availability
             };
             _vehicleRepository.Add(vehicle);
@@ -79,12 +86,39 @@ namespace BikeRentalSystem.Controllers
         public IActionResult EditVehicle(int id)
         {
             var vehicle = _vehicleRepository.GetByID(id);
-            return View(vehicle);
+            var vehicleTypes = _context.VehicleTypes.ToList();
+            var vm = new VehicleDetailViewModel
+            {
+                Id = vehicle.Id,
+                Make = vehicle.Make,
+                Description = vehicle.Description,
+                Price = vehicle.Price,
+                ImgURL = vehicle.ImgURL,
+                VehicleTypeId = vehicle.VehicleTypeID,
+                Availability = vehicle.Availability,
+                VehicleTypes = vehicleTypes.Select(vt => new SelectListItem
+                {
+                    Value = vt.Id.ToString(),
+                    Text = vt.Type
+                })
+                .ToList()
+            };
+            return View(vm);
         }
         [HttpPost]
 
-        public IActionResult Edit(Vehicle vehicle)
+        public IActionResult Edit(VehicleDetailViewModel vm)
         {
+            var vehicle = new Vehicle
+            {
+                Id = vm.Id,
+                Make = vm.Make,
+                Description = vm.Description,
+                Price = vm.Price,
+                ImgURL = vm.ImgURL,
+                VehicleTypeID = vm.VehicleTypeId,
+                Availability = vm.Availability
+            };
             _vehicleRepository.Update(vehicle);
             return RedirectToAction("Index");
         }
@@ -92,12 +126,22 @@ namespace BikeRentalSystem.Controllers
         public IActionResult DeleteVehicle(int id)
         {
             var vehicle = _vehicleRepository.GetByID(id);
-            return View(vehicle);
+            var vm = new VehicleDetailViewModel
+            {
+                Id = vehicle.Id,
+                Make = vehicle.Make,
+                Description = vehicle.Description,
+                Price = vehicle.Price,
+                ImgURL = vehicle.ImgURL,
+                Availability = vehicle.Availability,
+                VehicleTypeId = vehicle.VehicleTypeID
+            };
+            return View(vm);
         }
         [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(VehicleDetailViewModel vm)
         {
-            _vehicleRepository.Delete(id);
+            _vehicleRepository.Delete(vm.Id);
             return RedirectToAction("Index");
         }
         

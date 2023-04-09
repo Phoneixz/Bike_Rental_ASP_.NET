@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BikeRentalSystem.Models.RentalPoint>
+﻿@model BikeRentalSystem.ViewModels.RentalPointItemViewModel
 
 @{
     ViewData["Title"] = "Rental points";
@@ -11,13 +11,13 @@
         </div>
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach (var rentalPoint in Model)
+        @foreach (var rentalPoint in Model.RentalPoints)
         {
             <div class="col">
                 <div class="card h-100">
                     <div class="card-body">
-                        <p class="card-text">Name: @rentalPoint.Name</p>
-                        <p class="card-text">Address: @rentalPoint.Address</p>
+                        <h5 class="card-title">@rentalPoint.Name</h5>
+                        <p class="card-text">@rentalPoint.Address</p>
                         <a href="@Url.Action("Details", "RentalPoint", new { id = rentalPoint.Id })" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
@@ -25,6 +25,17 @@
         }
     </div>
 </div>
-<div class="col-12 text-end mt-3">
-    <a href="@Url.Action("Create", "RentalPoint")" class="btn btn-primary float-end">Add rental point</a>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-end mt-3">
+            <a href="@Url.Action("Create", "RentalPoint")" class="btn btn-primary">Add Rental Point</a>
+        </div>
+    </div>
 </div>
+<style>
+.btn:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+</style>
