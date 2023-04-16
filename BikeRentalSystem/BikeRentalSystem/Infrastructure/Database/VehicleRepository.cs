@@ -1,41 +1,31 @@
 ﻿using BikeRentalSystem.Models;
 using Microsoft.EntityFrameworkCore;
-using NuGet.ProjectModel;
-using NuGet.Protocol;
 using System.Linq.Expressions;
 
 namespace BikeRentalSystem.Infrastructure.Database
 {
-    public class VehicleRepository : IRepository<Vehicle>
+    public class VehicleRepository : Repository<Vehicle>, IRepository<Vehicle>
     {
-        private readonly Repository<Vehicle> _repository;
+        private readonly IRepository<Vehicle> _repository;
+        private readonly AppDbContext _appDbContext;
         
-        public VehicleRepository(Repository<Vehicle> repository) 
+        public VehicleRepository(IRepository<Vehicle> repository, AppDbContext _context) : base(_context)
         {
             _repository = repository;
-        }
-        public void Add(Vehicle entity)
-        {
-            _repository.Add(entity);
-        }
-        public void Delete(int id)
-        {
-            _repository.Delete(id);
+            _appDbContext = _context;
         }
 
-        public IQueryable<Vehicle> GetAll()
+        public override Vehicle GetByID(int id, params Expression<Func<Vehicle, object>>[] expressions)
         {
-            return _repository.GetAll();
+            IQueryable<Vehicle> query = _appDbContext.Vehicles;
+            foreach (var expression in expressions) 
+            {
+                query = query.Include(expression);
+            }
+            return query.SingleOrDefault(x => x.Id == id);
         }
 
-        public Vehicle GetByID(int id, params Expression<Func<Vehicle, object>>[] expressions)
-        {
-            return _repository.GetByID(id, e => e.VehicleType);
-        }
 
-        public void Update(Vehicle entity)
-        {
-            _repository.Update(entity);
-        }
+
     }
 }

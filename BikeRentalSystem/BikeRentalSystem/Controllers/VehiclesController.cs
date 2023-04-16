@@ -4,36 +4,32 @@ using BikeRentalSystem.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using BikeRentalSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq.Expressions;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace BikeRentalSystem.Controllers
 {
 
     public class VehiclesController : Controller
     {
-        private readonly IRepository<Vehicle> _vehicleRepository;
+        private readonly VehicleRepository _vehicleRepository;
+        private readonly RentalPointRepository _rentalPointRepository;
+        private readonly IMapper _mapper;
         private readonly AppDbContext _context;
-        public VehiclesController(IRepository<Vehicle> vehicleRepository, AppDbContext appDbContext)
+        public VehiclesController(VehicleRepository vehicleRepository, AppDbContext appDbContext, RentalPointRepository rentalPointRepository, IMapper mapper)
         {
             _vehicleRepository = vehicleRepository;
             _context = appDbContext;
+            _rentalPointRepository = rentalPointRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var vehicles = _vehicleRepository.GetAll().Include(v => v.VehicleType);
-
-            var vehicleViewModels = vehicles.Select(v => new VehicleDetailViewModel
-            {
-                Id = v.Id,
-                Make = v.Make,
-                Description = v.Description,
-                Price = v.Price,
-                ImgURL = v.ImgURL,
-                VehicleType = v.VehicleType,
-                Availability = v.Availability
-            }).ToList();
-
+            var vehicles = _vehicleRepository.GetAll().Include(v => v.VehicleType).ToList();
+            var vehicleViewModels = _mapper.Map<List<Vehicle>, List<VehicleDetailViewModel>>(vehicles);
             var vehicleItemViewModel = new VehicleItemViewModel
             {
                 Vehicles = vehicleViewModels
@@ -42,29 +38,17 @@ namespace BikeRentalSystem.Controllers
         }
         public IActionResult GetVehicleDetails(int id)
         {
-            var vehicle = _vehicleRepository.GetByID(id);
-            var vehicleDetailViewModel = new VehicleDetailViewModel
-            {
-                Id = vehicle.Id,
-                Make = vehicle.Make,
-                Description = vehicle.Description,
-                Price = vehicle.Price,
-                ImgURL = vehicle.ImgURL,
-                VehicleType = vehicle.VehicleType,
-                Availability = vehicle.Availability
-            };
+            var vehicle = _vehicleRepository.GetByID(id, e => e.VehicleType);
+            var vehicleDetailViewModel = _mapper.Map<Vehicle, VehicleDetailViewModel>(vehicle);
             return View(vehicleDetailViewModel);
         }
         public IActionResult Create()
         {
-            var vehicleTypes = _context.VehicleTypes.
-                Select( vt => new SelectListItem
-                {
-                    Value = vt.Id.ToString(),
-                    Text = vt.Type
-                })
-                .ToList();
-            var vm = new VehicleDetailViewModel { VehicleTypes = vehicleTypes };
+            var vehicleTypes = _context.VehicleTypes.ToList();
+            var selListItems = _mapper.Map<List<VehicleType>, List<SelectListItem>>(vehicleTypes);
+            var rentalPoints = _rentalPointRepository.GetAll().
+                ProjectTo<SelectListItem>(_mapper.ConfigurationProvider).ToList();
+            var vm = new VehicleDetailViewModel { VehicleTypes = selListItems, RentalPoints = rentalPoints };
             return View(vm);
         }
         [HttpPost]
@@ -77,6 +61,7 @@ namespace BikeRentalSystem.Controllers
                 Price = vm.Price,
                 ImgURL = vm.ImgURL,
                 VehicleTypeID = vm.VehicleTypeId,
+                RentalPointId = vm.RentalPointId,
                 Availability = vm.Availability
             };
             _vehicleRepository.Add(vehicle);
@@ -85,28 +70,18 @@ namespace BikeRentalSystem.Controllers
         [HttpGet]
         public IActionResult EditVehicle(int id)
         {
-            var vehicle = _vehicleRepository.GetByID(id);
+            var vehicle = _vehicleRepository.GetByID(id, e => e.VehicleType);
             var vehicleTypes = _context.VehicleTypes.ToList();
-            var vm = new VehicleDetailViewModel
-            {
-                Id = vehicle.Id,
-                Make = vehicle.Make,
-                Description = vehicle.Description,
-                Price = vehicle.Price,
-                ImgURL = vehicle.ImgURL,
-                VehicleTypeId = vehicle.VehicleTypeID,
-                Availability = vehicle.Availability,
-                VehicleTypes = vehicleTypes.Select(vt => new SelectListItem
-                {
-                    Value = vt.Id.ToString(),
-                    Text = vt.Type
-                })
-                .ToList()
-            };
+            var selListItems = _mapper.Map<List<VehicleType>, List<SelectListItem>>(vehicleTypes);
+            var rentalPoints = _rentalPointRepository.GetAll().
+                ProjectTo<SelectListItem>(_mapper.ConfigurationProvider).ToList();
+            var vm = _mapper.Map<Vehicle, VehicleDetailViewModel>(vehicle);
+            vm.VehicleTypes = selListItems;
+            vm.RentalPoints = rentalPoints;
             return View(vm);
         }
-        [HttpPost]
 
+        [HttpPost]
         public IActionResult Edit(VehicleDetailViewModel vm)
         {
             var vehicle = new Vehicle
@@ -117,6 +92,7 @@ namespace BikeRentalSystem.Controllers
                 Price = vm.Price,
                 ImgURL = vm.ImgURL,
                 VehicleTypeID = vm.VehicleTypeId,
+                RentalPointId = vm.RentalPointId,
                 Availability = vm.Availability
             };
             _vehicleRepository.Update(vehicle);
@@ -125,17 +101,8 @@ namespace BikeRentalSystem.Controllers
         [HttpGet]
         public IActionResult DeleteVehicle(int id)
         {
-            var vehicle = _vehicleRepository.GetByID(id);
-            var vm = new VehicleDetailViewModel
-            {
-                Id = vehicle.Id,
-                Make = vehicle.Make,
-                Description = vehicle.Description,
-                Price = vehicle.Price,
-                ImgURL = vehicle.ImgURL,
-                Availability = vehicle.Availability,
-                VehicleTypeId = vehicle.VehicleTypeID
-            };
+            var vehicle = _vehicleRepository.GetByID(id, e => e.VehicleType);
+            var vm = _mapper.Map<Vehicle, VehicleDetailViewModel>(vehicle);
             return View(vm);
         }
         [HttpPost]

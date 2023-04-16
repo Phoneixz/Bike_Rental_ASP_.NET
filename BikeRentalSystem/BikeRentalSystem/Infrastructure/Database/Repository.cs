@@ -21,7 +21,7 @@ namespace BikeRentalSystem.Infrastructure.Database
 
         public void Delete(int id)
         {
-            var entity = GetByID(id);
+            var entity = _context.Set<T>().Find(id);
             _context.Set<T>().Remove(entity);
             _context.SaveChanges();
         }
@@ -31,14 +31,9 @@ namespace BikeRentalSystem.Infrastructure.Database
             return _context.Set<T>();
         }
         
-        public T GetByID(int id, params Expression<Func<T, object>>[] includes)
+        public virtual T GetByID(int id, params Expression<Func<T, object>>[] expressions)
         {
-            IQueryable<T> query = _context.Set<T>();
-            foreach (var include in includes)
-            {
-                query = query.Include(include);
-            }
-            return query.FirstOrDefault(e => e.Id == id);
+            return _context.Set<T>().Find(id);
         }
 
         public void Update(T entity)

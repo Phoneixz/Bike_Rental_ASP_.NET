@@ -12,22 +12,21 @@
         <form asp-action="EditRentalPoint" method="post">
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label">Name:</label>
+                <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label">Address:</label>
+                <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-
-            <button type="submit" asp-action="EditRentalPoint" class="btn btn-primary">Save</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <button type="submit" asp-controller="RentalPoint" asp-action="EditRentalPoint" class="btn btn-primary">Save</button>
+            <a asp-controller="RentalPoint" asp-action="Index" class="btn btn-secondary">Back to List</a>
         </form>
+        
     </div>
 </div>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

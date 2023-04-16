@@ -10,35 +10,13 @@
         <div class="card-body">
             <h5 class="card-title">Address:</h5>
             <p class="card-text">@Model.Address</p>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
             <h5 class="card-title">Vehicles:</h5>
-            @if (Model.Vehicles.Count > 0)
-            {
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Make</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var vehicle in Model.Vehicles)
-                        {
-                            <tr>
-                                <td>@vehicle.Make</td>
-                                <td>@vehicle.VehicleType.Type</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <p class="card-text">No vehicles are currently available at this rental point.</p>
-            }
+            <ul>
+                @foreach (var vehicle in Model.Vehicles)
+                {
+                    <li>@vehicle.Make @vehicle.VehicleType.Type</li>
+                }
+            </ul>
         </div>
     </div>
     <div class="my-4">

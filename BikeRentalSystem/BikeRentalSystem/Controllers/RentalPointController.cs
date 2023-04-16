@@ -1,71 +1,43 @@
-﻿using BikeRentalSystem.Infrastructure.Database;
+﻿using AutoMapper;
+using BikeRentalSystem.Infrastructure.Database;
 using BikeRentalSystem.Models;
 using BikeRentalSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BikeRentalSystem.Controllers
 {
     public class RentalPointController : Controller
     {
-        private readonly IRepository<RentalPoint> _repository;
-        private readonly IRepository<Vehicle> _vehicleRepository;
-        public RentalPointController(IRepository<RentalPoint> repository, IRepository<Vehicle> vehiclerepository)
+        private readonly RentalPointRepository _repository;
+        private readonly VehicleRepository _vehicleRepository;
+        private readonly IMapper _mapper;
+        public RentalPointController(RentalPointRepository repository, VehicleRepository vehicleRepository, IMapper mapper)
         {
             _repository = repository;
-            _vehicleRepository = vehiclerepository;
+            _vehicleRepository = vehicleRepository;
+            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult Index()
         {
-            var rentalPoints = _repository.GetAll()
-                .Select(rp => new RentalPointDetailViewModel
-                {
-                    Id = rp.Id,
-                    Name = rp.Name,
-                    Address = rp.Address,
-                    Vehicles = rp.vehicles
-                        .Select(v => new VehicleDetailViewModel
-                        {
-                            Id = v.Id,
-                            ImgURL = v.ImgURL,
-                            Availability = v.Availability,
-                            Description = v.Description,
-                            Make = v.Make,
-                            VehicleTypeId = v.VehicleTypeID,
-                            Price = v.Price
-                        }).ToList()
-                });
-
-            var viewModel = new RentalPointItemViewModel
+            var rentalPoints = _repository.GetAll().ToList();
+            var rentalPointViewModels = _mapper.Map<List<RentalPoint>, List<RentalPointDetailViewModel>>(rentalPoints);
+            var rentalPointItemViewModel = new RentalPointItemViewModel
             {
-                RentalPoints = rentalPoints.ToList()
+                RentalPoints = rentalPointViewModels
             };
-
-            return View(viewModel);
+            return View(rentalPointItemViewModel);
         }
-  
+
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var rentalPoint = _repository.GetByID(id, rp=> rp.vehicles);
-            var viewModel = new RentalPointDetailViewModel
-            {
-                Id = rentalPoint.Id,
-                Name = rentalPoint.Name,
-                Address = rentalPoint.Address,
-                Vehicles = rentalPoint.vehicles
-                    .Select(v => new VehicleDetailViewModel
-                    {
-                        Id = v.Id,
-                        ImgURL = v.ImgURL,
-                        Availability = v.Availability,
-                        Description = v.Description,
-                        Make = v.Make,
-                        VehicleType = v.VehicleType,
-                        Price = v.Price
-                    }).ToList()
-            };
+            var rentalPoint = _repository.GetByID(id);
+            var vehicles = _vehicleRepository.GetAll().Include(v => v.VehicleType);
+            var viewModel = _mapper.Map<RentalPoint, RentalPointDetailViewModel>(rentalPoint);
+            viewModel.Vehicles = vehicles.Where(v=> v.RentalPointId==rentalPoint.Id);
             return View(viewModel);
         }
         public IActionResult Create()
@@ -87,21 +59,19 @@ namespace BikeRentalSystem.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var rentalPoint = _repository.GetByID(id, rp => rp.vehicles);
-            var viewModel = new RentalPointDetailViewModel
-            {
-                Id = rentalPoint.Id,
-                Name = rentalPoint.Name,
-                Address = rentalPoint.Address,
-            };
+            var rentalPoint = _repository.GetByID(id);
+            var viewModel = _mapper.Map<RentalPoint, RentalPointDetailViewModel>(rentalPoint);
             return View(viewModel);
         }
         [HttpPost]
         public IActionResult EditRentalPoint(RentalPointDetailViewModel viewModel)
         {
-            var rentalPoint = _repository.GetByID(viewModel.Id);
-            rentalPoint.Name = viewModel.Name;
-            rentalPoint.Address = viewModel.Address;
+            var rentalPoint = new RentalPoint
+            {
+                Id = viewModel.Id,
+                Name = viewModel.Name,
+                Address = viewModel.Address
+            };
             _repository.Update(rentalPoint);
             return RedirectToAction("Index");
         }
@@ -109,12 +79,7 @@ namespace BikeRentalSystem.Controllers
         public IActionResult Delete(int id)
         {
             var rentalPoint = _repository.GetByID(id);
-            var vm = new RentalPointDetailViewModel
-            {
-                Id = rentalPoint.Id,
-                Name = rentalPoint.Name,
-                Address = rentalPoint.Address
-            };
+            var vm = _mapper.Map<RentalPoint, RentalPointDetailViewModel>(rentalPoint);
             return View(vm);
         }
         [HttpPost]

@@ -50,10 +50,14 @@ namespace BikeRentalSystem.Models
 
             var rentalPoints = new List<RentalPoint>
             {
-                new RentalPoint { Id= 1, Name="Rental point 1", Address="Stojałowskiego 15", vehicles= new List<Vehicle>{vehicle3,vehicle1} },
-                new RentalPoint { Id= 2, Name="Rental point 2", Address="Piastowska 32", vehicles = new List<Vehicle>{vehicle2 }}
+                new RentalPoint { Id= 1, Name="Rental point 1", Address="Stojałowskiego 15"},
+                new RentalPoint { Id= 2, Name="Rental point 2", Address="Piastowska 32"}
             };
             _context.RentalPoints.AddRange(rentalPoints);
+            _context.SaveChanges();
+            vehicle1.RentalPointId = 1;
+            vehicle2.RentalPointId = 2;
+            vehicle3.RentalPointId = 1;
             _context.SaveChanges();
         }
     }

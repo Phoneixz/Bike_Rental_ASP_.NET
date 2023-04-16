@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using BikeRentalSystem.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using BikeRentalSystem.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,18 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(x => x.UseInMemoryDatabase("Test"));
-builder.Services.AddScoped<Repository<Vehicle>>(sp =>
-{
-    var dbContext = sp.GetRequiredService<AppDbContext>();
-    return new Repository<Vehicle>(dbContext);
-});
-builder.Services.AddScoped<IRepository<Vehicle>, VehicleRepository>();
-builder.Services.AddScoped<Repository<RentalPoint>>(sp =>
-{
-    var dbContext = sp.GetRequiredService<AppDbContext>();
-    return new Repository<RentalPoint>(dbContext);
-});
-builder.Services.AddScoped<IRepository<RentalPoint>, RentalPointRepository>();
+builder.Services.AddScoped<VehicleRepository>();
+builder.Services.AddScoped<RentalPointRepository>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddAutoMapper(typeof(RentalPointMappingProfile),typeof(VehicleMappingProfile),typeof(VehicleTypeMappingProfile));
+
 
 
 var app = builder.Build();
