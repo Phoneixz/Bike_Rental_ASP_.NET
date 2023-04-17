@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using BikeRentalSystem.MappingProfiles;
+using FluentValidation;
+using BikeRentalSystem.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,11 @@ builder.Services.AddScoped<VehicleRepository>();
 builder.Services.AddScoped<RentalPointRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddAutoMapper(typeof(RentalPointMappingProfile),typeof(VehicleMappingProfile),typeof(VehicleTypeMappingProfile));
+builder.Services.AddTransient<IValidator<Reservation>, ReservationValidator>();
+builder.Services.AddTransient<IValidator<RentalPoint>, RentalPointValidator>();
+builder.Services.AddTransient<IValidator<Vehicle>, VehicleValidator>();
+builder.Services.AddTransient<IValidator<VehicleType>, VehicleTypeValidator>();
+
 
 
 

@@ -2,6 +2,7 @@
 using BikeRentalSystem.Infrastructure.Database;
 using BikeRentalSystem.Models;
 using BikeRentalSystem.ViewModels;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -46,15 +47,28 @@ namespace BikeRentalSystem.Controllers
             return View(vm);
         }
         [HttpPost]
-        public IActionResult CreateRentalPoint(RentalPointDetailViewModel rentalPointvm)
+        public IActionResult CreateRentalPoint(RentalPointDetailViewModel rentalPointvm, [FromServices] IValidator<RentalPoint> rentalPointValidator)
         {
             var rentalPoint = new RentalPoint
             {
                 Name = rentalPointvm.Name,
                 Address = rentalPointvm.Address
             };
-            _repository.Add(rentalPoint);
-            return RedirectToAction("Index");
+            var RentalPointValidation = rentalPointValidator.Validate(rentalPoint);
+            if (RentalPointValidation.IsValid)
+            {
+                _repository.Add(rentalPoint);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach(var e in RentalPointValidation.Errors)
+                {
+                    ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
+                }
+                var updatedVm = _mapper.Map<RentalPoint, RentalPointDetailViewModel>(rentalPoint);
+                return View("Create",updatedVm);
+            }
         }
         [HttpGet]
         public IActionResult Edit(int id)
@@ -64,7 +78,7 @@ namespace BikeRentalSystem.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult EditRentalPoint(RentalPointDetailViewModel viewModel)
+        public IActionResult EditRentalPoint(RentalPointDetailViewModel viewModel, [FromServices] IValidator<RentalPoint> RentalPointValidator)
         {
             var rentalPoint = new RentalPoint
             {
@@ -72,8 +86,21 @@ namespace BikeRentalSystem.Controllers
                 Name = viewModel.Name,
                 Address = viewModel.Address
             };
-            _repository.Update(rentalPoint);
-            return RedirectToAction("Index");
+            var rpValidator = RentalPointValidator.Validate(rentalPoint);
+            if ( rpValidator.IsValid)
+            {
+                _repository.Update(rentalPoint);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach(var e in rpValidator.Errors)
+                {
+                    ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
+                }
+                var updatedVm = _mapper.Map<RentalPoint, RentalPointDetailViewModel>(rentalPoint);
+                return View("Edit", updatedVm);
+            }
         }
         [HttpGet]
         public IActionResult Delete(int id)

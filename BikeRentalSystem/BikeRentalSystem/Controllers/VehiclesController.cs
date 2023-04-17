@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using FluentValidation;
 
 namespace BikeRentalSystem.Controllers
 {
@@ -52,7 +53,7 @@ namespace BikeRentalSystem.Controllers
             return View(vm);
         }
         [HttpPost]
-        public IActionResult CreateVehicle(VehicleDetailViewModel vm)
+        public IActionResult CreateVehicle(VehicleDetailViewModel vm, [FromServices] IValidator<Vehicle> vehicleValidator)
         {
             var vehicle = new Vehicle
             {
@@ -64,8 +65,37 @@ namespace BikeRentalSystem.Controllers
                 RentalPointId = vm.RentalPointId,
                 Availability = vm.Availability
             };
-            _vehicleRepository.Add(vehicle);
-            return RedirectToAction("Index");
+            var VehicleValidation = vehicleValidator.Validate(vehicle);
+
+            if (VehicleValidation.IsValid)
+            {
+                _vehicleRepository.Add(vehicle);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var e in VehicleValidation.Errors)
+                {
+                    ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
+                }
+                var vehicleTypes = _context.VehicleTypes.ToList();
+                var selListItems = _mapper.Map<List<VehicleType>, List<SelectListItem>>(vehicleTypes);
+                var rentalPoints = _rentalPointRepository.GetAll().
+                    ProjectTo<SelectListItem>(_mapper.ConfigurationProvider).ToList();
+                var updatedVm = new VehicleDetailViewModel
+                {
+                    VehicleTypes = selListItems,
+                    RentalPoints = rentalPoints,
+                    Make = vm.Make,
+                    Description = vm.Description,
+                    Price = vm.Price,
+                    ImgURL = vm.ImgURL,
+                    VehicleTypeId = vm.VehicleTypeId,
+                    RentalPointId = vm.RentalPointId,
+                    Availability = vm.Availability
+                };
+                return View("Create", updatedVm);
+            }
         }
         [HttpGet]
         public IActionResult EditVehicle(int id)
@@ -82,7 +112,7 @@ namespace BikeRentalSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(VehicleDetailViewModel vm)
+        public IActionResult Edit(VehicleDetailViewModel vm, [FromServices] IValidator<Vehicle> vehicleValidator)
         {
             var vehicle = new Vehicle
             {
@@ -95,8 +125,28 @@ namespace BikeRentalSystem.Controllers
                 RentalPointId = vm.RentalPointId,
                 Availability = vm.Availability
             };
-            _vehicleRepository.Update(vehicle);
-            return RedirectToAction("Index");
+            var VehicleValidator = vehicleValidator.Validate(vehicle);
+
+            if (VehicleValidator.IsValid)
+            {
+                _vehicleRepository.Update(vehicle);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach(var e in  VehicleValidator.Errors)
+                {
+                    ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
+                }
+                var vehicleTypes = _context.VehicleTypes.ToList();
+                var selListItems = _mapper.Map<List<VehicleType>, List<SelectListItem>>(vehicleTypes);
+                var rentalPoints = _rentalPointRepository.GetAll().
+                    ProjectTo<SelectListItem>(_mapper.ConfigurationProvider).ToList();
+                var updatedVm = _mapper.Map<Vehicle, VehicleDetailViewModel>(vehicle);
+                updatedVm.VehicleTypes = selListItems;
+                updatedVm.RentalPoints = rentalPoints;
+                return View("EditVehicle", updatedVm);
+            }
         }
         [HttpGet]
         public IActionResult DeleteVehicle(int id)
