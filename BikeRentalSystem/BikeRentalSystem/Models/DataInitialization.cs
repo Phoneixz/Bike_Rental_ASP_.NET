@@ -1,10 +1,21 @@
 ﻿using BikeRentalSystem.Infrastructure.Database;
+using Microsoft.AspNetCore.Identity;
 
 namespace BikeRentalSystem.Models
 {
     public class DataInitialization
     {
-        public static void Initialize(AppDbContext _context) 
+        private readonly AppDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public DataInitialization(AppDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
+        public void Initialize(AppDbContext _context) 
         {
             
             var vehicletype1 = new VehicleType { Type = "Rower górski" };
@@ -59,6 +70,42 @@ namespace BikeRentalSystem.Models
             vehicle2.RentalPointId = 2;
             vehicle3.RentalPointId = 1;
             _context.SaveChanges();
+        }
+        public async Task InitializeUsersAsync()
+        {
+            // create roles if they don't exist
+            var roleNames = new[] { "Administrator", "User" };
+            foreach (var roleName in roleNames)
+            {
+                var roleExists = await _roleManager.RoleExistsAsync(roleName);
+                if (!roleExists)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
+            // create users
+            var user = new IdentityUser
+            {
+                UserName = "user@example.com",
+                Email = "user@example.com"
+            };
+            var result = await _userManager.CreateAsync(user, "User123!");
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "User");
+            }
+
+            var admin = new IdentityUser
+            {
+                UserName = "admin@example.com",
+                Email = "admin@example.com"
+            };
+            result = await _userManager.CreateAsync(admin, "Admin123!");
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(admin, "Administrator");
+            }
         }
     }
 }
