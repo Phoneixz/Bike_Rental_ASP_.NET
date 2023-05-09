@@ -74,7 +74,7 @@ namespace BikeRentalSystem.Models
         public async Task InitializeUsersAsync()
         {
             // create roles if they don't exist
-            var roleNames = new[] { "Administrator", "User" };
+            var roleNames = new[] { "Administrator", "User", "Operator" };
             foreach (var roleName in roleNames)
             {
                 var roleExists = await _roleManager.RoleExistsAsync(roleName);
@@ -90,21 +90,52 @@ namespace BikeRentalSystem.Models
                 UserName = "user@example.com",
                 Email = "user@example.com"
             };
-            var result = await _userManager.CreateAsync(user, "User123!");
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, "User");
-            }
+            var userPassword = "User123!";
 
-            var admin = new IdentityUser
+            var userExists = await _userManager.FindByEmailAsync(user.Email);
+            
+            if (userExists == null)
+            {
+                var res = await _userManager.CreateAsync(user, userPassword);
+                if (res.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "User");
+                }
+            }
+            
+            var adminUser = new IdentityUser
             {
                 UserName = "admin@example.com",
                 Email = "admin@example.com"
             };
-            result = await _userManager.CreateAsync(admin, "Admin123!");
-            if (result.Succeeded)
+            var adminPassword = "Admin123!";
+            var adminRole = "Administrator";
+            var adminUserExists = await _userManager.FindByEmailAsync(adminUser.Email);
+            if (adminUserExists == null)
             {
-                await _userManager.AddToRoleAsync(admin, "Administrator");
+                var res = await _userManager.CreateAsync(adminUser, adminPassword);
+                if (res.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(adminUser, adminRole);
+                }
+            }
+
+            var operatorUser = new IdentityUser
+            {
+                UserName = "operator@example.com",
+                Email = "operator@example.com"
+            };
+            var operatorPassword = "Operator123!";
+            var operatorRole = "Operator";
+
+            var operatorUserExists = await _userManager.FindByEmailAsync(operatorUser.Email);
+            if (operatorUserExists == null)
+            {
+                var res = await _userManager.CreateAsync(operatorUser, operatorPassword);
+                if (res.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(operatorUser, operatorRole);
+                }
             }
         }
     }

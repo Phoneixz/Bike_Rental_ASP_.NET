@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\S59729\Documents\GitHub\Bike_Rental_ASP_.NET\BikeRentalSystem\BikeRentalSystem
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/S59729/Documents/GitHub/Bike_Rental_ASP_.NET/BikeRentalSystem/BikeRentalSystem/Areas/Admin/Views/Admin/GetAllUsers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cR2V0QWxsVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/S59729/Documents/GitHub/Bike_Rental_ASP_.NET/BikeRentalSystem/BikeRentalSystem/Areas/Admin/Views/Admin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
