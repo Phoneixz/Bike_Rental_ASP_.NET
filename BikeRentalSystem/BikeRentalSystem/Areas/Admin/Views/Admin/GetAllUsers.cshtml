@@ -14,6 +14,9 @@
                         <input type="hidden" name="userId" value="@user.Id"/>
                         <button type="submit" class="btn btn-sm btn-success">Set as Admin</button>
                     </form>
+                    <form method="get" action="@Url.Action("Index","Reservation", new {userId = user.Id, area=""})">
+                        <button type="submit" class="btn btn-sm btn-primary">View reservations</button>
+                    </form>
                 </div>
             </div>
         </div>

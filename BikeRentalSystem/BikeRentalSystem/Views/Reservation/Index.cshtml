@@ -1,0 +1,26 @@
+﻿@model BikeRentalSystem.ViewModels.ReservationItemViewModel
+
+@{
+    ViewData["Title"] = "Reservations";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Reservation List</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var reservation in Model.Reservations)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <p class="card-text">Status: @reservation.Status</p>
+                        <p class="card-text">Pickup Date: @reservation.PickupDate</p>
+                        <p class="card-text">Return Date: @reservation.ReturnDate</p>
+                        <div class="text-end">
+                            <a href="@Url.Action("Details", "Reservation", new { id = reservation.Id })" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

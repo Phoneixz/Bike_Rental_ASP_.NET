@@ -1,4 +1,6 @@
-﻿namespace BikeRentalSystem.ViewModels
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace BikeRentalSystem.ViewModels
 {
     public class ReservationItemViewModel
     {

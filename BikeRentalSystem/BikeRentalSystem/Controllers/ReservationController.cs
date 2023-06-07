@@ -30,13 +30,14 @@ namespace BikeRentalSystem.Controllers
             _userManager = userManager;
         }
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var reservations = _reservationRepository.GetAll().ToList();
-            var reservationViewModels = _mapper.Map<List<Reservation>,List<RentalPointDetailViewModel>>(reservations);
-            var reservationItemViewModel = new RentalPointItemViewModel
+            var user = await _userManager.GetUserAsync(User);
+            var reservations = _reservationRepository.GetAll().Where(r => r.CustomerId == user.Id).ToList();
+            var reservationViewModels = _mapper.Map<List<Reservation>,List<ReservationDetailViewModel>>(reservations);
+            var reservationItemViewModel = new ReservationItemViewModel
             {
-                RentalPoints = reservationViewModels
+                Reservations = reservationViewModels
             };
             return View(reservationItemViewModel);
         }
@@ -98,6 +99,17 @@ namespace BikeRentalSystem.Controllers
                 };
                 return View("Create", updatedVm);
             }
+        }
+        public IActionResult ChangeReservationStatus(int reservationId, string newStatus)
+        {
+            var reservation = _reservationRepository.GetByID(reservationId);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+            reservation.Status = newStatus;
+            _reservationRepository.Update(reservation);
+            return RedirectToAction("Details", new {id = reservationId});
         }
 
     }

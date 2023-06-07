@@ -1,0 +1,114 @@
+﻿@model BikeRentalSystem.ViewModels.ReservationDetailViewModel
+
+@{
+    ViewData["Title"] = "Reservation Details";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-5">Reservation Details</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Reservation Details</h5>
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>Reservation ID:</th>
+                                <td>@Model.Id</td>
+                            </tr>
+                            <tr>
+                                <th>Customer ID:</th>
+                                <td>@Model.CustomerId</td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td>@Model.Status</td>
+                            </tr>
+                            <tr>
+                                <th>Pickup Date:</th>
+                                <td>@Model.PickupDate.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                            <tr>
+                                <th>Return Date:</th>
+                                <td>@Model.ReturnDate.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                            <tr>
+                                <th>Total Cost:</th>
+                                <td>@Model.TotalCost.ToString("C")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="d-grid gap-2">
+                @if (Model.Status == "Approved")
+                {
+                    <form method="post" action="@Url.Action("ChangeReservationStatus", "Reservation")">
+                        <input type="hidden" name="reservationId" value="@Model.Id" />
+                        <input type="hidden" name="newStatus" value="Rented" />
+                        <button type="submit" class="btn btn-primary">Rent</button>
+                    </form>
+                }
+                else if (Model.Status == "Rented")
+                {
+                    <form method="post" action="@Url.Action("ChangeReservationStatus", "Reservation")">
+                        <input type="hidden" name="reservationId" value="@Model.Id" />
+                        <input type="hidden" name="newStatus" value="Returned" />
+                        <button type="submit" class="btn btn-primary">Return</button>
+                    </form>
+                }
+                else if (Model.Status == "Returned")
+                {
+                    <button class="btn btn-primary" disabled>Returned</button>
+                }
+                else
+                {
+                    <button class="btn btn-primary" disabled>@Model.Status</button>
+                }
+                <a class="btn btn-primary" asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .table th {
+        width: 150px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .table td {
+        color: #333;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        font-size: 1rem;
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+</style>
