@@ -22,8 +22,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultUI().AddDefaultTokenProviders();
 builder.Services.AddScoped<VehicleRepository>();
 builder.Services.AddScoped<RentalPointRepository>();
+builder.Services.AddScoped<ReservationRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddAutoMapper(typeof(RentalPointMappingProfile),typeof(VehicleMappingProfile),typeof(VehicleTypeMappingProfile));
+builder.Services.AddAutoMapper(typeof(RentalPointMappingProfile),typeof(VehicleMappingProfile),typeof(VehicleTypeMappingProfile),typeof(ReservationMappingProfile));
 builder.Services.AddTransient<IValidator<Reservation>, ReservationValidator>();
 builder.Services.AddTransient<IValidator<RentalPoint>, RentalPointValidator>();
 builder.Services.AddTransient<IValidator<Vehicle>, VehicleValidator>();

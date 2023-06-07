@@ -1,0 +1,47 @@
+﻿@model BikeRentalSystem.ViewModels.ReservationDetailViewModel
+
+@{
+    ViewData["Title"] = "Place a reservation";
+}
+
+<h1>Place your reservation</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PickupDate" class="control-label"></label>
+                <input asp-for="PickupDate" class="form-control" type="datetime-local"
+                       value="@Model.PickupDate.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="PickupDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReturnDate" class="control-label"></label>
+                <input asp-for="ReturnDate" class="form-control" type="datetime-local"
+                       value="@Model.ReturnDate.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="ReturnDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vehicles" class="control-label">Select Vehicles</label>
+                <select asp-for="Vehicles" asp-items="Model.SelList" multiple class="form-control"></select>
+                <span asp-validation-for="Vehicles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" asp-action="CreateReservation" class="btn btn-primary">Reserve</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

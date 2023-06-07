@@ -4,14 +4,16 @@
     {
         public int Id { get; set; }
 
-        public string CustomerName { get; set; }
+        public string CustomerId { get; set; }
 
-        public DateTime? PickUpDate { get; set; }
+        public string Status { get; set; }
 
-        public DateTime? ReturnDate { get; set; }
+        public DateTime PickUpDate { get; set; }
 
-        public Vehicle Vehicle { get; set; }
+        public DateTime ReturnDate { get; set; }
+
+        public List<Vehicle> Vehicles { get; set; }
         
-        public decimal TotalCost { get; set; }
+        public double TotalCost { get; set; }
     }
 }
